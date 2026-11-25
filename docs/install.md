@@ -19,8 +19,8 @@ Add the following to `~/.claude/settings.json`.
 }
 ```
 
-Please restart Claude Code after making the change. A running session may
-need a restart to pick it up.
+If the status line does not show up in a session that is already running, restart
+Claude Code.
 
 Here is what my `~/.claude/settings.json` looks like.
 

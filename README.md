@@ -1,5 +1,6 @@
 # Table Of Contents
 - [Introduction](#introduction)
+- [Screenshots](#screenshots)
 - [Requirements](#requirements)
 - [Install](#install)
 - [Description](#description)
@@ -11,28 +12,34 @@
 # Introduction
 
 **cc-statusline** is a bash script to show usage and other info in the
-[Claude Code](https://code.claude.com/docs/en/statusline) status line. Here is what it looks like on my Mac
-in [iTerm2](https://iterm2.com/).
-
-<img src="images/my-cc-status.png" border="1" alt="my-cc-statusline">
+[Claude Code](https://code.claude.com/docs/en/statusline) status line.
 
 It shows how much of the 5-hour and weekly limits you have used, how much
 of the context window is used, the model, working directory, git branch
-and how many other Claude Code sessions are running. In the screenshot
-above, the directory is not a git repo, so only the working directory is
-shown.
+and how many other Claude Code sessions are running.
+
+I like to see this info at a glance so I don't have to type `/usage` or
+`/context` all the time. Hope you will find it useful as well.
+
+# Screenshots
+
+Here is what it looks like on my Mac in [iTerm2](https://iterm2.com/).
+
+<img src="images/my-cc-status.png" border="1" alt="my-cc-statusline">
+*Screenshot: Outside a git repo*
+
+The directory is not a git repo, so only the working directory is shown.
 
 <img src="images/my-cc-status-git.png" border="1" alt="my-cc-status-git">
+*Screenshot: Inside a git repo*
 
 In a git repo, the branch is shown after the directory name, here `(main)`.
 
 <img src="images/my-cc-status-git_1.png" border="1" alt="my-cc-status-git_1">
+*Screenshot: `+1` = one other session is running on this machine, `(1 here)` = that session is in the same repo as this one*
 
-`+1` means one other Claude Code session is running, and `(1 here)` means it
-is in the same repo.
-
-I like to see this info at a glance so I don't have to type `/usage` or
-`/context`. Hope you will find it useful as well.
+<img src="images/my-cc-status-git_2.png" border="1" alt="my-cc-status-git_2">
+*Screenshot: `+2` = two other sessions on this machine, `(1 here)` = one of those two is in this repo (this session is not counted)*
 
 # Requirements
 
@@ -65,8 +72,8 @@ Add the following to `~/.claude/settings.json`.
 }
 ```
 
-Please restart Claude Code after making the change. A running session may
-need a restart to pick it up.
+If the status line does not show up in a session that is already running, restart
+Claude Code.
 
 Here is what my `~/.claude/settings.json` looks like.
 
@@ -104,8 +111,8 @@ I only have one Claude Code session running, so `+N` is hidden too.
 | `[Sonnet 5.5]` | current model |
 | `cc-statusline` | working directory (last component by default) |
 | `(main)` | git branch or short commit hash if HEAD is detached (hidden outside a repo) |
-| `+2` | Number of other Claude Code sessions running on this machine (hidden when zero) |
-| `(1 here)` | Number of those sessions in the same git repo or directory, shown in yellow (hidden when zero) |
+| `+2` | Number of other Claude Code sessions running on this machine, in any directory or repo. This session is not counted (hidden when zero) |
+| `(1 here)` | How many of those are in the same git repo, or the same directory if there is no repo, shown in yellow (hidden when zero). `+2` without it means the other sessions are working somewhere else |
 
 `Session` and `Week` are the same as **Current session** and **This week**
 under **Settings > Usage** in the Claude desktop app. These limits are for
@@ -124,10 +131,27 @@ To count other sessions, the script writes one small file per session in
 the repo root (or directory) and the working directory. The script removes
 the files for sessions that have exited. This is the only directory it writes to.
 
+To see which sessions are running on this machine (for example, the three
+behind the `+2 (1 here)` screenshot):
+
+```
+for p in $(pgrep -x claude); do
+  echo "$p $(ps -o tty=,etime= -p $p) $(lsof -a -p $p -d cwd -Fn | sed -n 's/^n//p')"
+done
+```
+
+Output:
+
+```
+44726 ttys005  39:48 /Users/muquit/gitdev/cc-statusline
+51634 ttys007  15:19 /Users/muquit/gitdev/cc-statusline
+55442 ttys003  00:06 /Users/muquit/gitdev/twofa-rescue
+```
+
 # Troubleshooting
 
 If you see a problem with the status line, ask Claude Code to look at
-`statusline-command.sh` and fix it.
+`statusline-command.sh`, fix it, and send a pull request. Thx
 
 # Uninstall
 
@@ -145,10 +169,10 @@ License is MIT. Please see [LICENSE.txt](LICENSE.txt) for details.
 
 # Credits
 
-* I used [Claude](https://claude.ai) on the web with Claude Opus 5.5 to develop the script.
+* [Claude](https://claude.ai) on the web with Claude Opus 5.5 to develop the script.
 
-* I used [Claude Code](https://claude.com/claude-code) with Claude Sonnet 5.5 to clean it up.
+* [Claude Code](https://claude.com/claude-code) with Claude Sonnet 5.5 to clean it up.
 
 
 ---
-<sub>TOC/glossary expansion by https://github.com/muquit/markdown-toc-go v1.0.6 on Nov-23-2026</sub>
+<sub>TOC/glossary expansion by https://github.com/muquit/markdown-toc-go v1.0.6 on Nov-24-2026</sub>

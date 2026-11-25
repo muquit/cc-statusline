@@ -17,8 +17,8 @@ I only have one Claude Code session running, so `+N` is hidden too.
 | `[Sonnet 5.5]` | current model |
 | `cc-statusline` | working directory (last component by default) |
 | `(main)` | git branch or short commit hash if HEAD is detached (hidden outside a repo) |
-| `+2` | Number of other Claude Code sessions running on this machine (hidden when zero) |
-| `(1 here)` | Number of those sessions in the same git repo or directory, shown in yellow (hidden when zero) |
+| `+2` | Number of other Claude Code sessions running on this machine, in any directory or repo. This session is not counted (hidden when zero) |
+| `(1 here)` | How many of those are in the same git repo, or the same directory if there is no repo, shown in yellow (hidden when zero). `+2` without it means the other sessions are working somewhere else |
 
 `Session` and `Week` are the same as **Current session** and **This week**
 under **Settings > Usage** in the Claude desktop app. These limits are for
@@ -36,3 +36,20 @@ To count other sessions, the script writes one small file per session in
 `~/.claude/live-sessions/`. Each file contains the Claude Code process ID,
 the repo root (or directory) and the working directory. The script removes
 the files for sessions that have exited. This is the only directory it writes to.
+
+To see which sessions are running on this machine (for example, the three
+behind the `+2 (1 here)` screenshot):
+
+```
+for p in $(pgrep -x claude); do
+  echo "$p $(ps -o tty=,etime= -p $p) $(lsof -a -p $p -d cwd -Fn | sed -n 's/^n//p')"
+done
+```
+
+Output:
+
+```
+44726 ttys005  39:48 /Users/muquit/gitdev/cc-statusline
+51634 ttys007  15:19 /Users/muquit/gitdev/cc-statusline
+55442 ttys003  00:06 /Users/muquit/gitdev/twofa-rescue
+```

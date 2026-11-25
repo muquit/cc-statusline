@@ -1,4 +1,5 @@
 @[:markdown](intro.md)
+@[:markdown](screenshots.md)
 @[:markdown](requirements.md)
 @[:markdown](install.md)
 @[:markdown](description.md)

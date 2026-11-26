@@ -5,5 +5,6 @@
 @[:markdown](description.md)
 @[:markdown](troubleshooting.md)
 @[:markdown](uninstall.md)
+@[:markdown](see_also.md)
 @[:markdown](license.md)
 @[:markdown](credits.md)

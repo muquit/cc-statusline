@@ -170,7 +170,7 @@ rm -rf ~/.claude/live-sessions
 
 # See Also
 
-* [locate_cc.sh](https://github.com/muquit/locate_cc.sh) - a bash script to find the [iTerm2](https://iterm2.com/) tab running a
+* [locate-cc](https://github.com/muquit/locate-cc) - a bash script to find the [iTerm2](https://iterm2.com/) tab running a
   [Claude Code](https://claude.com/claude-code) session on Mac. Handy when you have many sessions and tabs.
 
 # License (MIT)
@@ -185,4 +185,4 @@ License is MIT. Please see [LICENSE.txt](LICENSE.txt) for details.
 
 
 ---
-<sub>TOC/glossary expansion by https://github.com/muquit/markdown-toc-go v1.0.6 on Nov-25-2026</sub>
+<sub>TOC/glossary expansion by https://github.com/muquit/markdown-toc-go v1.0.6 on Nov-26-2026</sub>
